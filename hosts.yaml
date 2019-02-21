@@ -9,16 +9,34 @@
     - role : src_node_fetch                                               # Invoking node_fetch role to be executed with below variables only if when condition is true
       AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
       EnvName: dit2                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname    == 'machine1' and src_node == "dit2"            # This when condition will trigger the node_fetch role only when ip address matches. 
-      run_once: true
+      when: ansible_hostname    == 'machine1' and src_node == "dit2"              
 
 
 
-    - role : dest_node_fetch                                               # Invoking node_fetch role to be executed with below variables only if when condition is tru              
+    - role : src_node_fetch                                               # Invoking node_fetch role to be executed with below variables only if when condition is true
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
+      EnvName: dit1                                                   # Setting the environment name variable here only if when condition is true
+      when: ansible_hostname    == 'machine1' and src_node == "dit1"
+
+
+
+
+
+
+    - role : dest_node_fetch                                                     
       AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
       EnvName: dit1                                                   # Setting the environment name variable here only if when condition is true
       when: ansible_hostname    == 'machine1' and dest_node == "dit1"
       run_once: true
+
+    - role : dest_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
+      EnvName: dit2                                                   # Setting the environment name variable here only if when condition is true
+      when: ansible_hostname    == 'machine1' and dest_node == "dit2"
+      run_once: true
+
+
+
 
 
   tasks:
