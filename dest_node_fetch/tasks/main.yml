@@ -1,0 +1,22 @@
+---                                                                                                           # From here we are starting the playbook three "---" denotes a yml start.
+ - name: Checking the Variable Values                                                                         # this is just giving the task tag
+   debug:                                                                                                     # debug task invoked
+     msg: " {{ EnvName }} {{ AppPath }} "                                                                     # printing the Variables Supplied to this role from main playbook.
+
+
+ - name: Find command to search .MF files and store the file names in find_Output register                    # task brief headline
+   shell: |
+          find {{ AppPath }} -name "*.MF" -exec cat {} \;|egrep 'Module-Name|Built-Version' |tr -d $'\r'|cut -d':' -f2 | paste -d',' - -|sed "s| ||g"|sort| uniq|sed "s|^|'|g"|sed "s|,|': '|g"|sed "s|$|',|g"|tr '\n' ' '|sed "s|^|{ |g"|sed "s|, $|}|g"     
+   register: find_output                                                                                      
+
+ - name:
+   debug:
+     msg: "{{ find_output }}"
+
+
+
+
+ - set_fact:
+     dest_dict: "{{ find_output.stdout }}"
+
+
