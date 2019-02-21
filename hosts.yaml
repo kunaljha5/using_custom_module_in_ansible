@@ -37,14 +37,7 @@
         file: dest_node_fetch/vars/main.yml
         name: dest_dict
       delegate_to: localhost
-
-
-
-    - set_fact:
-        dest_dict: "{{ find_output_2.stdout }}"
-      when: ansible_hostname == 'machine1' and dest_node == 'dit1'
-      delegate_to: localhost
-
+    
     - name: calling python module manually created
       dictinary_compare: 
         src: "{{ src_dict  }}"
