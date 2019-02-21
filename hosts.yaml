@@ -6,56 +6,50 @@
 
 
   roles:
-    - role : src_node_fetch                                               # Invoking node_fetch role to be executed with below variables only if when condition is true
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
-      EnvName: dit2                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname    == 'machine1' and src_node == "dit2"              
+    - role: src_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
+      EnvName: dit2
+      when: ansible_hostname == 'machine2' and src_node == 'dit2'
+      delegate_to: DIT2 
 
+    
 
-
-    - role : src_node_fetch                                               # Invoking node_fetch role to be executed with below variables only if when condition is true
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
-      EnvName: dit1                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname    == 'machine1' and src_node == "dit1"
-
-
-
-
-
-
-    - role : dest_node_fetch                                                     
+    - role : dest_node_fetch                                                    
       AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
       EnvName: dit1                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname    == 'machine1' and dest_node == "dit1"
-      run_once: true
-
-    - role : dest_node_fetch
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
-      EnvName: dit2                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname    == 'machine1' and dest_node == "dit2"
-      run_once: true
+      when: ansible_hostname == 'machine1' and dest_node == 'dit1'
+      delegate_to: DIT1
 
 
-
-
+      #    - role: custom-module1
+      #      delegate_to: localhost
+      #      run_once: true
 
   tasks:
-    - name: print source
-      debug:
-        msg: "{{ src_dict }}"
-      run_once: true
+    - name: Include vars of src_node_fetch/vars/main.yml into the 'src_dict'.
+      include_vars:
+        file: src_node_fetch/vars/main.yml
+        name: src_dict
+      delegate_to: localhost
 
-    - name: print dest
-      debug:
-        msg: "{{ dest_dict }}"
-      run_once: true
+    - name: Include vars of dest_node_fetch/vars/main.yml into the 'dest_dict'.
+      include_vars:
+        file: dest_node_fetch/vars/main.yml
+        name: dest_dict
+      delegate_to: localhost
+
+
+
+    - set_fact:
+        dest_dict: "{{ find_output_2.stdout }}"
+      when: ansible_hostname == 'machine1' and dest_node == 'dit1'
+      delegate_to: localhost
 
     - name: calling python module manually created
       dictinary_compare: 
         src: "{{ src_dict  }}"
         dest: "{{  dest_dict }}" 
       delegate_to: 127.0.0.1
-      run_once: true
       register: data1
     - name: debug1
       debug:
