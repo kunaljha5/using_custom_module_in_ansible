@@ -1,0 +1,466 @@
+root@kunal-VirtualBox:~/megha/script/report_without_file/using_custom_module_in_ansible# ansible-playbook hosts.yaml  -e "dest_node=dit1" -e "src_node=dit2"
+
+PLAY [Yaml Playbook to fetch the App module version deployed on each server] *******************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [DIT2]
+ok: [DIT1]
+
+TASK [src_node_fetch : Checking the Variable Values] *******************************************************************************************************************
+ok: [DIT1] => {
+    "msg": " dit2 /ciohosting/cce2e/dit2/cce2e-383-mule/apps/ "
+}
+ok: [DIT2] => {
+    "msg": " dit2 /ciohosting/cce2e/dit2/cce2e-383-mule/apps/ "
+}
+
+TASK [src_node_fetch : Find command to search .MF files and store the file names in find_Output register] **************************************************************
+changed: [DIT2]
+changed: [DIT1]
+
+TASK [src_node_fetch : debug] ******************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit2/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.014396",
+        "end": "2019-02-21 08:11:46.639449",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:11:46.625053",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle1': '5.1.1.2', 'moudle2': '5.1.1.2'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle1': '5.1.1.2', 'moudle2': '5.1.1.2'}"
+        ]
+    }
+}
+ok: [DIT2] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit2/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.024531",
+        "end": "2019-02-21 08:11:46.642457",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:11:46.617926",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle1': '5.1.1.2', 'moudle2': '5.1.1.2'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle1': '5.1.1.2', 'moudle2': '5.1.1.2'}"
+        ]
+    }
+}
+
+TASK [src_node_fetch : set_fact] ***************************************************************************************************************************************
+ok: [DIT1]
+ok: [DIT2]
+
+TASK [src_node_fetch : Checking the Variable Values] *******************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : Find command to search .MF files and store the file names in find_Output register] **************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : debug] ******************************************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : set_fact] ***************************************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [dest_node_fetch : Checking the Variable Values] ******************************************************************************************************************
+ok: [DIT1] => {
+    "msg": " dit1 /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ "
+}
+
+TASK [dest_node_fetch : Find command to search .MF files and store the file names in find_Output register] *************************************************************
+changed: [DIT1]
+
+TASK [dest_node_fetch : debug] *****************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.012386",
+        "end": "2019-02-21 08:11:48.036704",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:11:48.024318",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}"
+        ]
+    }
+}
+
+TASK [dest_node_fetch : set_fact] **************************************************************************************************************************************
+ok: [DIT1]
+
+TASK [dest_node_fetch : Checking the Variable Values] ******************************************************************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : Find command to search .MF files and store the file names in find_Output register] *************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : debug] *****************************************************************************************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : set_fact] **************************************************************************************************************************************
+skipping: [DIT1]
+
+TASK [print source] ****************************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "api-gateway": "3.1.0.1",
+        "moudle1": "5.1.1.2",
+        "moudle2": "5.1.1.2"
+    }
+}
+
+TASK [print dest] ******************************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "api-gateway": "3.1.0.1",
+        "moudle2": "5.1.1.1"
+    }
+}
+
+TASK [calling python module manually created] **************************************************************************************************************************
+ok: [DIT1 -> 127.0.0.1]
+
+TASK [debug1] **********************************************************************************************************************************************************
+ok: [DIT1 -> 127.0.0.1] => {
+    "msg": {
+        "changed": false,
+        "failed": false,
+        "msg": {
+            "moudle1": [
+                "5.1.1.2",
+                "DEPLOY"
+            ],
+            "moudle2": [
+                "5.1.1.2",
+                "DEPLOY"
+            ]
+        }
+    }
+}
+
+PLAY RECAP *************************************************************************************************************************************************************
+DIT1                       : ok=13   changed=2    unreachable=0    failed=0
+DIT2                       : ok=5    changed=1    unreachable=0    failed=0
+
+root@kunal-VirtualBox:~/megha/script/report_without_file/using_custom_module_in_ansible# ansible-playbook hosts.yaml  -e "dest_node=dit2" -e "src_node=dit1"
+
+PLAY [Yaml Playbook to fetch the App module version deployed on each server] *******************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [DIT1]
+ok: [DIT2]
+
+TASK [src_node_fetch : Checking the Variable Values] *******************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : Find command to search .MF files and store the file names in find_Output register] **************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : debug] ******************************************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : set_fact] ***************************************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : Checking the Variable Values] *******************************************************************************************************************
+ok: [DIT1] => {
+    "msg": " dit1 /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ "
+}
+ok: [DIT2] => {
+    "msg": " dit1 /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ "
+}
+
+TASK [src_node_fetch : Find command to search .MF files and store the file names in find_Output register] **************************************************************
+changed: [DIT1]
+changed: [DIT2]
+
+TASK [src_node_fetch : debug] ******************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.028245",
+        "end": "2019-02-21 08:11:59.935554",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:11:59.907309",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}"
+        ]
+    }
+}
+ok: [DIT2] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.030349",
+        "end": "2019-02-21 08:11:59.951806",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:11:59.921457",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}"
+        ]
+    }
+}
+
+TASK [src_node_fetch : set_fact] ***************************************************************************************************************************************
+ok: [DIT1]
+ok: [DIT2]
+
+TASK [dest_node_fetch : Checking the Variable Values] ******************************************************************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : Find command to search .MF files and store the file names in find_Output register] *************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : debug] *****************************************************************************************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : set_fact] **************************************************************************************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : Checking the Variable Values] ******************************************************************************************************************
+ok: [DIT1] => {
+    "msg": " dit2 /ciohosting/cce2e/dit2/cce2e-383-mule/apps/ "
+}
+
+TASK [dest_node_fetch : Find command to search .MF files and store the file names in find_Output register] *************************************************************
+changed: [DIT1]
+
+TASK [dest_node_fetch : debug] *****************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit2/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.011017",
+        "end": "2019-02-21 08:12:01.251228",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:12:01.240211",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle1': '5.1.1.2', 'moudle2': '5.1.1.2'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle1': '5.1.1.2', 'moudle2': '5.1.1.2'}"
+        ]
+    }
+}
+
+TASK [dest_node_fetch : set_fact] **************************************************************************************************************************************
+ok: [DIT1]
+
+TASK [print source] ****************************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "api-gateway": "3.1.0.1",
+        "moudle2": "5.1.1.1"
+    }
+}
+
+TASK [print dest] ******************************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "api-gateway": "3.1.0.1",
+        "moudle1": "5.1.1.2",
+        "moudle2": "5.1.1.2"
+    }
+}
+
+TASK [calling python module manually created] **************************************************************************************************************************
+ok: [DIT1 -> 127.0.0.1]
+
+TASK [debug1] **********************************************************************************************************************************************************
+ok: [DIT1 -> 127.0.0.1] => {
+    "msg": {
+        "changed": false,
+        "failed": false,
+        "msg": {
+            "Noting to Deploy": "Nothing to Deploy"
+        }
+    }
+}
+
+PLAY RECAP *************************************************************************************************************************************************************
+DIT1                       : ok=13   changed=2    unreachable=0    failed=0
+DIT2                       : ok=5    changed=1    unreachable=0    failed=0
+
+root@kunal-VirtualBox:~/megha/script/report_without_file/using_custom_module_in_ansible# ansible-playbook hosts.yaml  -e "dest_node=dit1" -e "src_node=dit1"
+
+PLAY [Yaml Playbook to fetch the App module version deployed on each server] *******************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************
+ok: [DIT1]
+ok: [DIT2]
+
+TASK [src_node_fetch : Checking the Variable Values] *******************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : Find command to search .MF files and store the file names in find_Output register] **************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : debug] ******************************************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : set_fact] ***************************************************************************************************************************************
+skipping: [DIT1]
+skipping: [DIT2]
+
+TASK [src_node_fetch : Checking the Variable Values] *******************************************************************************************************************
+ok: [DIT1] => {
+    "msg": " dit1 /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ "
+}
+ok: [DIT2] => {
+    "msg": " dit1 /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ "
+}
+
+TASK [src_node_fetch : Find command to search .MF files and store the file names in find_Output register] **************************************************************
+changed: [DIT1]
+changed: [DIT2]
+
+TASK [src_node_fetch : debug] ******************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.017749",
+        "end": "2019-02-21 08:12:10.915984",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:12:10.898235",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}"
+        ]
+    }
+}
+ok: [DIT2] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.018424",
+        "end": "2019-02-21 08:12:10.915994",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:12:10.897570",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}"
+        ]
+    }
+}
+
+TASK [src_node_fetch : set_fact] ***************************************************************************************************************************************
+ok: [DIT1]
+ok: [DIT2]
+
+TASK [dest_node_fetch : Checking the Variable Values] ******************************************************************************************************************
+ok: [DIT1] => {
+    "msg": " dit1 /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ "
+}
+
+TASK [dest_node_fetch : Find command to search .MF files and store the file names in find_Output register] *************************************************************
+changed: [DIT1]
+
+TASK [dest_node_fetch : debug] *****************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "changed": true,
+        "cmd": "find /ciohosting/cce2e/dit1/cce2e-383-mule/apps/ -name \"*.MF\" -exec cat {} \\;|egrep 'Module-Name|Built-Version' |tr -d $'\\r'|cut -d':' -f2 | paste -d',' - -|sed \"s| ||g\"|sort| uniq|sed \"s|^|'|g\"|sed \"s|,|': '|g\"|sed \"s|$|',|g\"|tr '\\n' ' '|sed \"s|^|{ |g\"|sed \"s|, $|}|g\"",
+        "delta": "0:00:00.010935",
+        "end": "2019-02-21 08:12:11.778686",
+        "failed": false,
+        "rc": 0,
+        "start": "2019-02-21 08:12:11.767751",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}",
+        "stdout_lines": [
+            "{ 'api-gateway': '3.1.0.1', 'moudle2': '5.1.1.1'}"
+        ]
+    }
+}
+
+TASK [dest_node_fetch : set_fact] **************************************************************************************************************************************
+ok: [DIT1]
+
+TASK [dest_node_fetch : Checking the Variable Values] ******************************************************************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : Find command to search .MF files and store the file names in find_Output register] *************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : debug] *****************************************************************************************************************************************
+skipping: [DIT1]
+
+TASK [dest_node_fetch : set_fact] **************************************************************************************************************************************
+skipping: [DIT1]
+
+TASK [print source] ****************************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "api-gateway": "3.1.0.1",
+        "moudle2": "5.1.1.1"
+    }
+}
+
+TASK [print dest] ******************************************************************************************************************************************************
+ok: [DIT1] => {
+    "msg": {
+        "api-gateway": "3.1.0.1",
+        "moudle2": "5.1.1.1"
+    }
+}
+
+TASK [calling python module manually created] **************************************************************************************************************************
+ok: [DIT1 -> 127.0.0.1]
+
+TASK [debug1] **********************************************************************************************************************************************************
+ok: [DIT1 -> 127.0.0.1] => {
+    "msg": {
+        "changed": false,
+        "failed": false,
+        "msg": {
+            "Noting to Deploy": "Nothing to Deploy"
+        }
+    }
+}
+
+PLAY RECAP *************************************************************************************************************************************************************
+DIT1                       : ok=13   changed=2    unreachable=0    failed=0
+DIT2                       : ok=5    changed=1    unreachable=0    failed=0
+
+root@kunal-VirtualBox:~/megha/script/report_without_file/using_custom_module_in_ansible#
