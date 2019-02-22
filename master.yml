@@ -12,6 +12,12 @@
       when: ansible_hostname == 'machine2' and src_node == 'dit2'
       delegate_to: DIT2 
 
+    - role: src_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
+      EnvName: dit1
+      when: ansible_hostname == 'machine1' and src_node == 'dit1'
+      delegate_to: DIT1
+
     
 
     - role : dest_node_fetch                                                    
@@ -20,10 +26,13 @@
       when: ansible_hostname == 'machine1' and dest_node == 'dit1'
       delegate_to: DIT1
 
+    - role : dest_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
+      EnvName: dit2                                                   # Setting the environment name variable here only if when condition is true
+      when: ansible_hostname == 'machine2' and dest_node == 'dit2'
+      delegate_to: DIT2
 
-      #    - role: custom-module1
-      #      delegate_to: localhost
-      #      run_once: true
+
 
   tasks:
     - name: Include vars of src_node_fetch/vars/main.yml into the 'src_dict'.
@@ -38,10 +47,11 @@
         name: dest_dict
       delegate_to: localhost
     
-    - name: calling python module manually created
+    - name: calling python module for disaplaying the module versions deployed on src and dest side by side
       dictinary_compare: 
         src: "{{ src_dict  }}"
         dest: "{{  dest_dict }}" 
+        opt: False
       delegate_to: 127.0.0.1
       register: data1
     - name: debug1
@@ -49,5 +59,20 @@
         msg: "{{ data1 }}"
       delegate_to: 127.0.0.1
       run_once: true
+
+
+    - name: calling python module for displaying the module version difference between src and destination env
+      dictinary_compare:
+        src: "{{ src_dict  }}"
+        dest: "{{  dest_dict }}"
+        opt: True
+      delegate_to: 127.0.0.1
+      register: data2
+    - name: debug2
+      debug:
+        msg: "{{ data2 }}"
+      delegate_to: 127.0.0.1
+      run_once: true
+
 
 ...

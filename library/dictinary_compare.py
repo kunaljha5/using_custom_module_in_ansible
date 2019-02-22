@@ -8,6 +8,25 @@ ANSIBLE_METADATA = {'status': ['stableinterface'],
 KEYNOTFOUND = 'DEPLOY'       # KeyNotFound for dictDiff
 
 
+def dict_display(src, dest):
+    KEYNOTFOUND = "NA"
+    """ Setting the Variable KEYNOTFOUND to NA """
+    """ Creating the Empty dictionary with name diff """
+    
+    diff = {}
+    """ staritng the for loop for all the keys of src dictinary """
+    for key in src.keys():
+        """ checking the source key exist on destination dictionary, if not then execute below"""
+        if (not dest.has_key(key)):
+            diff[key] = (src[key], KEYNOTFOUND)
+        else:
+            diff[key] = (src[key], dest[key])
+    for key in dest.keys():
+        if (not src.has_key(key)):
+            diff[key] = ( KEYNOTFOUND, dest[key])
+    if len(diff) == 0:
+        diff ={ KEYNOTFOUND: KEYNOTFOUND }
+    return diff
 
 def dict_diff(src, dest):
     diff = {}
@@ -30,6 +49,7 @@ def main():
         argument_spec = dict(
             src       = dict(required=True, type='dict'),
             dest      = dict(required=True, type='dict'),
+            opt      = dict(type='bool'),
         ),
         supports_check_mode=True,
     )
@@ -41,19 +61,17 @@ def main():
         print "dest is not dict type"
         sys.exit()
     src  =    params['src']
-    dest =    params['dest']  
-    msg  =    dict(dict_diff(src,dest))
-    module.exit_json(changed=False, msg=msg)
+    dest =    params['dest']
+    if params['opt'] is False:
+        opt = False
+    else:
+        opt =  True
+    if opt == True:
+        msg  =    dict_diff(src,dest)
+        module.exit_json(changed=False, msg=msg)
+    else:
+        msg = dict_display(src,dest)
+        module.exit_json(changed=False, msg=msg)
 
 if __name__ == '__main__':
     main()
-
-#src = sys.argv[1]
-#dest = sys.argv[2]
-#data1=json.loads(src)
-#data2=json.loads(dest)
-
-
-#data = dict_diff(data1,data2)
-#print data
-
