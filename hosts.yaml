@@ -1,0 +1,53 @@
+---
+- name: Yaml Playbook to fetch the App module version deployed on each server
+  hosts: DIT                                                       # this is the server group for which we want to execute this playbook
+  gather_facts: True                                               # we want to gater facts about the remote systems so we can use them
+  ignore_errors: False                                             # Generally playbooks will stop executing any more steps on a host that has a task fail. Sometimes, though, you want to continue on. To do so, we use this
+
+
+  roles:
+    - role: src_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
+      EnvName: dit2
+      when: ansible_hostname == 'machine2' and src_node == 'dit2'
+      delegate_to: DIT2 
+
+    
+
+    - role : dest_node_fetch                                                    
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
+      EnvName: dit1                                                   # Setting the environment name variable here only if when condition is true
+      when: ansible_hostname == 'machine1' and dest_node == 'dit1'
+      delegate_to: DIT1
+
+
+      #    - role: custom-module1
+      #      delegate_to: localhost
+      #      run_once: true
+
+  tasks:
+    - name: Include vars of src_node_fetch/vars/main.yml into the 'src_dict'.
+      include_vars:
+        file: src_node_fetch/vars/main.yml
+        name: src_dict
+      delegate_to: localhost
+
+    - name: Include vars of dest_node_fetch/vars/main.yml into the 'dest_dict'.
+      include_vars:
+        file: dest_node_fetch/vars/main.yml
+        name: dest_dict
+      delegate_to: localhost
+    
+    - name: calling python module manually created
+      dictinary_compare: 
+        src: "{{ src_dict  }}"
+        dest: "{{  dest_dict }}" 
+      delegate_to: 127.0.0.1
+      register: data1
+    - name: debug1
+      debug:
+        msg: "{{ data1 }}"
+      delegate_to: 127.0.0.1
+      run_once: true
+
+...
