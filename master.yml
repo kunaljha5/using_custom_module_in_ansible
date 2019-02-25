@@ -55,11 +55,9 @@
       delegate_to: 127.0.0.1
       register: data1
     - name: debug1
-      debug:
-        msg: "{{ data1 }}"
+      shell: echo  "{{ data1.msg }}"
       delegate_to: 127.0.0.1
-      run_once: true
-
+      register: sam1
 
     - name: calling python module for displaying the module version difference between src and destination env
       dictinary_compare:
@@ -69,10 +67,20 @@
       delegate_to: 127.0.0.1
       register: data2
     - name: debug2
+      shell: echo  "{{ data2.msg }}"
+      delegate_to: 127.0.0.1
+      run_once: true
+      register: sam2
+    - name:
       debug:
-        msg: "{{ data2 }}"
+        msg: "{{ sam2.stdout_lines }}"
       delegate_to: 127.0.0.1
       run_once: true
 
+    - name:
+      debug:
+        msg: "{{ sam1.stdout_lines }}"
+      delegate_to: 127.0.0.1
+      run_once: true
 
 ...

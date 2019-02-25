@@ -26,7 +26,12 @@ def dict_display(src, dest):
             diff[key] = ( KEYNOTFOUND, dest[key])
     if len(diff) == 0:
         diff ={ KEYNOTFOUND: KEYNOTFOUND }
-    return diff
+    out_lines = ''
+    for key in diff.keys():
+        out_lines  =  out_lines + key + "," + str(diff[key]) + "\n"
+    return out_lines
+
+    #return diff
 
 def dict_diff(src, dest):
     diff = {}
@@ -34,14 +39,18 @@ def dict_diff(src, dest):
 
     for key in src.keys():
         if (not dest.has_key(key)):
-            diff[key] = (src[key], KEYNOTFOUND)
+            diff[key] = (src[key])
         elif (src[key] != dest[key]):
             if src[key] > dest[key]:
-                diff[key] = (src[key], KEYNOTFOUND )
+                diff[key] = (src[key])
     # Check all keys in dest dict to find missing
     if len(diff) == 0:
         diff = { "Noting to Deploy" : "Nothing to Deploy"}
-    return diff
+    out_lines = ''
+    for key in diff.keys():
+        out_lines  =  out_lines + key + "," + str(diff[key]) + "\n"
+    return out_lines
+    #return diff
 
 
 def main():
