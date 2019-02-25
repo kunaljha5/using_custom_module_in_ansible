@@ -57,6 +57,7 @@
     - name: debug1
       shell: echo  "{{ data1.msg }}"
       delegate_to: 127.0.0.1
+      run_once: true
       register: sam1
 
     - name: calling python module for displaying the module version difference between src and destination env
@@ -71,13 +72,13 @@
       delegate_to: 127.0.0.1
       run_once: true
       register: sam2
-    - name:
+    - name: print the version diff
       debug:
         msg: "{{ sam2.stdout_lines }}"
       delegate_to: 127.0.0.1
       run_once: true
 
-    - name:
+    - name: print the version display
       debug:
         msg: "{{ sam1.stdout_lines }}"
       delegate_to: 127.0.0.1
