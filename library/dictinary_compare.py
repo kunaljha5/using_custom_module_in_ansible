@@ -28,7 +28,7 @@ def dict_display(src, dest):
         diff ={ KEYNOTFOUND: KEYNOTFOUND }
     out_lines = ''
     for key in diff.keys():
-        out_lines  =  out_lines + key + "," + str(diff[key]) + "\n"
+        out_lines  =  out_lines + "ModuleName : " + key + ", VersionNumber : " + str(diff[key]) + "\n"
     return out_lines
 
     #return diff
@@ -48,7 +48,7 @@ def dict_diff(src, dest):
         diff = { "Noting to Deploy" : "Nothing to Deploy"}
     out_lines = ''
     for key in diff.keys():
-        out_lines  =  out_lines + key + "," + str(diff[key]) + "\n"
+        out_lines  =  out_lines + "ModuleName :  " + key + ", VersionNumber : " + str(diff[key]) + "\n"
     return out_lines
     #return diff
 
