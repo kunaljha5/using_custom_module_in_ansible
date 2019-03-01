@@ -55,10 +55,10 @@
       delegate_to: 127.0.0.1
       register: data1
     - name: debug1
-      shell: echo  "{{ data1.msg }}"
+      shell: echo  "{{ data1.msg }} "
       delegate_to: 127.0.0.1
       run_once: true
-      register: sam1
+      register: display
 
     - name: calling python module for displaying the module version difference between src and destination env
       dictinary_compare:
@@ -68,20 +68,30 @@
       delegate_to: 127.0.0.1
       register: data2
     - name: debug2
-      shell: echo  "{{ data2.msg }}"
-      delegate_to: 127.0.0.1
-      run_once: true
-      register: sam2
-    - name: print the version diff
-      debug:
-        msg: "{{ sam2.stdout_lines }}"
+      shell: echo  "{{ data2.msg }}" > ./dest_node_fetch/vars/diff.yml
       delegate_to: 127.0.0.1
       run_once: true
 
-    - name: print the version display
+
+    - name: Include vars of dest_node_fetch/vars/diff.yml into the 'diff'.
+      include_vars:
+        file: dest_node_fetch/vars/diff.yml
+        name: diff
+      delegate_to: localhost
+      run_once: true
+
+
+    - name: Print the diff dictionary  
       debug:
-        msg: "{{ sam1.stdout_lines }}"
-      delegate_to: 127.0.0.1
+        msg: "{{ diff }}"
+      delegate_to: localhost
+      run_once: true
+
+
+    - name: print the display option for deployed version
+      debug:
+        msg: "{{ display.stdout_lines }}"
+      delegate_to: localhost
       run_once: true
 
 ...
