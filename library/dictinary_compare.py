@@ -12,7 +12,7 @@ def dict_display(src, dest):
     KEYNOTFOUND = "NA"
     """ Setting the Variable KEYNOTFOUND to NA """
     """ Creating the Empty dictionary with name diff """
-    
+
     diff = {}
     """ staritng the for loop for all the keys of src dictinary """
     for key in src.keys():
@@ -48,11 +48,14 @@ def dict_diff(src, dest):
         diff = { "Noting to Deploy" : "Nothing to Deploy"}
     out_lines = ''
     counter=1
+    main_dict = {}
     for key in diff.keys():
+        out_lines  = {}
         out_lines['app']  =  key
         out_lines['version'] = str(diff[key])
-        counter = counter + 1 
-    return out_lines
+        main_dict[counter] = out_lines
+        counter = counter + 1
+    return main_dict
     #return diff
 
 
