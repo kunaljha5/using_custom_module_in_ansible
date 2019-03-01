@@ -47,8 +47,11 @@ def dict_diff(src, dest):
     if len(diff) == 0:
         diff = { "Noting to Deploy" : "Nothing to Deploy"}
     out_lines = ''
+    counter=1
     for key in diff.keys():
-        out_lines  =  out_lines + "ModuleName :  " + key + " ,\nVersionNumber : " + str(diff[key]) + "\n"
+        out_lines['app']  =  key
+        out_lines['version'] = str(diff[key])
+        counter = counter + 1 
     return out_lines
     #return diff
 
