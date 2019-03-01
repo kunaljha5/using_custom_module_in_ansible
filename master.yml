@@ -67,16 +67,14 @@
         opt: True
       delegate_to: 127.0.0.1
       register: data2
-    - name: debug2
-      shell: echo  "{{ data2.msg }}" > ./dest_node_fetch/vars/diff.yml
-      delegate_to: 127.0.0.1
-      run_once: true
-
-
-    - name: Include vars of dest_node_fetch/vars/diff.yml into the 'diff'.
-      include_vars:
-        file: dest_node_fetch/vars/diff.yml
-        name: diff
+    
+    
+    
+    
+    - name: set_fact diff and display
+      set_fact:
+        diff: "{{ data2.msg }}"
+        display: "{{ display.stdout_lines }}"
       delegate_to: localhost
       run_once: true
 
@@ -90,7 +88,7 @@
 
     - name: print the display option for deployed version
       debug:
-        msg: "{{ display.stdout_lines }}"
+        msg: "{{ display }}"
       delegate_to: localhost
       run_once: true
 
