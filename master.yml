@@ -18,7 +18,17 @@
       when: ansible_hostname == 'machine1' and src_node == 'dit1'
       delegate_to: DIT1
 
+    - role: src_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
+      EnvName: sit3
+      when: ansible_hostname == 'machine1' and src_node == 'sit3'
+      delegate_to: SIT3 
     
+        - role: src_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
+      EnvName: sit1
+      when: ansible_hostname == 'machine2' and src_node == 'sit1'
+      delegate_to: SIT1 
 
     - role : dest_node_fetch                                                    
       AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
@@ -32,7 +42,17 @@
       when: ansible_hostname == 'machine2' and dest_node == 'dit2'
       delegate_to: DIT2
 
+    - role : dest_node_fetch                                                    
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
+      EnvName: sit3                                                   # Setting the environment name variable here only if when condition is true
+      when: ansible_hostname == 'machine1' and dest_node == 'sit3'
+      delegate_to: SIT3
 
+    - role : dest_node_fetch
+      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
+      EnvName: sit1                                                   # Setting the environment name variable here only if when condition is true
+      when: ansible_hostname == 'machine2' and dest_node == 'sit1'
+      delegate_to: SIT1
 
   tasks:
     - name: Include vars of src_node_fetch/vars/main.yml into the 'src_dict'.
