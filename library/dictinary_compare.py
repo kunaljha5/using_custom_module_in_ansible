@@ -41,8 +41,30 @@ def dict_diff(src, dest):
         if (not dest.has_key(key)):
             diff[key] = (src[key])
         elif (src[key] != dest[key]):
-            if src[key] > dest[key]:
-                diff[key] = (src[key])
+            ##### 19.0.0.2 > 4.0.0.7
+            dest_list = []
+            src_list = []
+            for i in dest[key].split('.'):
+                dest_list.append(i)
+            for i in src[key].split('.'):
+                src_list.append(i)
+            for i in range(4):
+                if i == 0:
+                    if src_list[i] > dest_list[i]:
+                        diff[key] = (src[key])
+                        break
+                if i == 1:
+                    if src_list[i] > dest_list[i]:
+                        diff[key] = (src[key])
+                        break
+                if i == 2:
+                    if src_list[i] > dest_list[i]:
+                        diff[key] = (src[key])
+                        break
+                if i == 3:
+                    if src_list[i] > dest_list[i]:
+                        diff[key] = (src[key])
+                        break
     # Check all keys in dest dict to find missing
     if len(diff) == 0:
         diff = { "Noting to Deploy" : "Nothing to Deploy"}
