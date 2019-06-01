@@ -50,19 +50,19 @@ def dict_diff(src, dest):
                 src_list.append(i)
             for i in range(4):
                 if i == 0:
-                    if src_list[i] > dest_list[i]:
+                    if int(src_list[i]) > int(dest_list[i]):
                         diff[key] = (src[key])
                         break
                 if i == 1:
-                    if src_list[i] > dest_list[i]:
+                    if int(src_list[i]) > int(dest_list[i]):
                         diff[key] = (src[key])
                         break
                 if i == 2:
-                    if src_list[i] > dest_list[i]:
+                    if int(src_list[i]) > int(dest_list[i]):
                         diff[key] = (src[key])
                         break
                 if i == 3:
-                    if src_list[i] > dest_list[i]:
+                    if int(src_list[i]) > int(dest_list[i]):
                         diff[key] = (src[key])
                         break
     # Check all keys in dest dict to find missing
