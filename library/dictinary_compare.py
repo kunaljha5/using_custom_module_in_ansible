@@ -36,7 +36,6 @@ def dict_display(src, dest):
 def dict_diff(src, dest):
     diff = {}
     # Check all keys in src dict
-
     for key in src.keys():
         if (not dest.has_key(key)):
             diff[key] = (src[key])
@@ -48,19 +47,47 @@ def dict_diff(src, dest):
                 dest_list.append(i)
             for i in src[key].split('.'):
                 src_list.append(i)
+            lookforward = 1
             for i in range(4):
                 if i == 0:
+                    ###### 4.1.2.3    , 3.1.2.3
                     if int(src_list[i]) > int(dest_list[i]):
                         diff[key] = (src[key])
+                        lookforward=0
                         break
+                    ###### 3.1.2.3  , 4.1.2.3
+                    elif int(src_list[i]) < int(dest_list[i]):
+                        lookforward=0
+                        break
+                    ##### 3.1.2.3 , 3.2.2.3
+                    else:
+                        lookforward=1
                 if i == 1:
-                    if int(src_list[i]) > int(dest_list[i]):
-                        diff[key] = (src[key])
-                        break
+                    ###### 3.1.2.3    , 3.0.2.3
+                    if lookforward == 1:
+                        if int(src_list[i]) > int(dest_list[i]):
+                            diff[key] = (src[key])
+                            lookforward=0
+                            break
+                    ###### 3.1.2.3    , 3.3.2.3
+                        elif int(src_list[i]) < int(dest_list[i]):
+                            lookforward=0
+                            break
+                    ###### 3.1.3.3    , 3.1.2.3
+                        else:
+                            lookforward=1
                 if i == 2:
-                    if int(src_list[i]) > int(dest_list[i]):
-                        diff[key] = (src[key])
-                        break
+                    ###### 3.1.3.3    , 3.1.2.3
+                    if lookforward == 1:
+                        if int(src_list[i]) > int(dest_list[i]):
+                            diff[key] = (src[key])
+                            lookforward=0
+                            break
+                        elif int(src_list[i]) < int(dest_list[i]):
+                            lookforward=0
+                            break
+                        else:
+                            lookforward=1
                 if i == 3:
                     if int(src_list[i]) > int(dest_list[i]):
                         diff[key] = (src[key])
@@ -78,9 +105,10 @@ def dict_diff(src, dest):
         main_dict[counter] = out_lines
         counter = counter + 1
     return main_dict
-    #return diff
-
-
+#return diff
+    
+  
+  
 def main():
     module = AnsibleModule(
         argument_spec = dict(
