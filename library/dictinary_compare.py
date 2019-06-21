@@ -7,12 +7,10 @@ ANSIBLE_METADATA = {'status': ['stableinterface'],
                     'version': '1.0'}
 KEYNOTFOUND = 'DEPLOY'       # KeyNotFound for dictDiff
 
-
 def dict_display(src, dest):
     KEYNOTFOUND = "NA"
     """ Setting the Variable KEYNOTFOUND to NA """
     """ Creating the Empty dictionary with name diff """
-
     diff = {}
     """ staritng the for loop for all the keys of src dictinary """
     for key in src.keys():
@@ -26,12 +24,14 @@ def dict_display(src, dest):
             diff[key] = ( KEYNOTFOUND, dest[key])
     if len(diff) == 0:
         diff ={ KEYNOTFOUND: KEYNOTFOUND }
-    out_lines = ''
+    out_lines = "'ModName',('SrcNode','DestNode')\n"
     for key in diff.keys():
         out_lines  =  out_lines  + key + "," + str(diff[key]) + "\n"
     return out_lines
 
-    #return diff
+
+
+
 
 def dict_diff(src, dest):
     diff = {}
