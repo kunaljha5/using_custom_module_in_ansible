@@ -7,8 +7,6 @@
     - role: src_node_fetch
       AppPath: '{{(lookup("vars", src_node)).mule_path }}'
       EnvName: "{{ src_node }}"
-      #when: ansible_hostname == '{{(lookup("vars", src_node)).machine_name }}' and src_node == '{{(lookup("vars", src_node)).flag_node }}'
-      #delegate_to: '{{(lookup("vars", src_node)).machine_inventory_name }}'
 
 - name: Yaml Playbook to fetch Source Node App module version deployed
   hosts: "{{ dest_node }}"                                                       # this is the server group for which we want to execute this playbook
@@ -18,8 +16,6 @@
     - role: dest_node_fetch
       AppPath: '{{(lookup("vars", dest_node)).mule_path }}'
       EnvName: "{{ dest_node }}"
-      #when: ansible_hostname == '{{(lookup("vars", dest_node)).machine_name }}' and dest_node == '{{(lookup("vars", dest_node)).flag_node }}'
-      #delegate_to: '{{(lookup("vars", dest_node)).machine_inventory_name }}'
 
 
 - name: Got From All node
@@ -30,50 +26,34 @@
       include_vars:
         file: src_node_fetch/vars/main.yml
         name: src_dict
-        #delegate_to: localhost
-
     - name: Include vars of dest_node_fetch/vars/main.yml into the 'dest_dict'.
       include_vars:
         file: dest_node_fetch/vars/main.yml
         name: dest_dict
-        # delegate_to: localhost
-    
     - name: calling python module for disaplaying the module versions deployed on src and dest side by side
       dictinary_compare: 
         src: "{{ src_dict  }}"
         dest: "{{  dest_dict }}" 
         opt: False
-        #delegate_to: 127.0.0.1
       register: data1
     - name: debug1
       shell: echo  "{{ data1.msg }} "
-      # delegate_to: 127.0.0.1
       run_once: true
       register: display
-
     - name: calling python module for displaying the module version difference between src and destination env
       dictinary_compare:
         src: "{{ src_dict  }}"
         dest: "{{  dest_dict }}"
         opt: True
-        #delegate_to: 127.0.0.1
       register: data2
-    
-    
-    
-    
     - name: set_fact diff and display
       set_fact:
         diff: "{{ data2.msg }}"
         display: "{{ display.stdout_lines }}"
-        #delegate_to: localhost
       run_once: true
-
-
     - name: Print the diff dictionary  
       debug:
         msg: "{{ diff }}"
-        #delegate_to: localhost
       run_once: true
 
     - debug:
@@ -81,7 +61,6 @@
     - name: print the display option for deployed version
       debug:
               msg: '{{ display }}' 
-        #delegate_to: localhost
       run_once: true
 
 ...
