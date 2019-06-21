@@ -24,7 +24,7 @@ def dict_display(src, dest):
             diff[key] = ( KEYNOTFOUND, dest[key])
     if len(diff) == 0:
         diff ={ KEYNOTFOUND: KEYNOTFOUND }
-    out_lines = "'ModName',('SrcNode','DestNode')\n"
+    out_lines = "ModName,('SrcNode','DestNode')\n"
     for key in diff.keys():
         out_lines  =  out_lines  + key + "," + str(diff[key]) + "\n"
     return out_lines

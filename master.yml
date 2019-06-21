@@ -1,82 +1,53 @@
 ---
-- name: Yaml Playbook to fetch the App module version deployed on each server
-  hosts: DIT                                                       # this is the server group for which we want to execute this playbook
-  gather_facts: True                                               # we want to gater facts about the remote systems so we can use them
-  ignore_errors: False                                             # Generally playbooks will stop executing any more steps on a host that has a task fail. Sometimes, though, you want to continue on. To do so, we use this
-
-
+- name: Yaml Playbook to fetch Source Node App module version deployed
+  hosts: "{{ src_node }}"                                                       # this is the server group for which we want to execute this playbook
+  vars_files:
+  - "vars/dest.yml"
   roles:
     - role: src_node_fetch
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
-      EnvName: dit2
-      when: ansible_hostname == 'machine2' and src_node == 'dit2'
-      delegate_to: DIT2 
+      AppPath: '{{(lookup("vars", src_node)).mule_path }}'
+      EnvName: "{{ src_node }}"
+      #when: ansible_hostname == '{{(lookup("vars", src_node)).machine_name }}' and src_node == '{{(lookup("vars", src_node)).flag_node }}'
+      #delegate_to: '{{(lookup("vars", src_node)).machine_inventory_name }}'
 
-    - role: src_node_fetch
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
-      EnvName: dit1
-      when: ansible_hostname == 'machine1' and src_node == 'dit1'
-      delegate_to: DIT1
+- name: Yaml Playbook to fetch Source Node App module version deployed
+  hosts: "{{ dest_node }}"                                                       # this is the server group for which we want to execute this playbook
+  vars_files:
+  - "vars/dest.yml"
+  roles:
+    - role: dest_node_fetch
+      AppPath: '{{(lookup("vars", dest_node)).mule_path }}'
+      EnvName: "{{ dest_node }}"
+      #when: ansible_hostname == '{{(lookup("vars", dest_node)).machine_name }}' and dest_node == '{{(lookup("vars", dest_node)).flag_node }}'
+      #delegate_to: '{{(lookup("vars", dest_node)).machine_inventory_name }}'
 
-    - role: src_node_fetch
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
-      EnvName: sit3
-      when: ansible_hostname == 'machine1' and src_node == 'sit3'
-      delegate_to: SIT3 
-    
-    - role: src_node_fetch
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/
-      EnvName: sit1
-      when: ansible_hostname == 'machine2' and src_node == 'sit1'
-      delegate_to: SIT1 
 
-    - role : dest_node_fetch                                                    
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
-      EnvName: dit1                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname == 'machine1' and dest_node == 'dit1'
-      delegate_to: DIT1
-
-    - role : dest_node_fetch
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
-      EnvName: dit2                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname == 'machine2' and dest_node == 'dit2'
-      delegate_to: DIT2
-
-    - role : dest_node_fetch                                                    
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
-      EnvName: sit3                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname == 'machine1' and dest_node == 'sit3'
-      delegate_to: SIT3
-
-    - role : dest_node_fetch
-      AppPath: /ciohosting/cce2e/{{ EnvName }}/cce2e-383-mule/apps/   # Setting the application variable here only if when condition is true
-      EnvName: sit1                                                   # Setting the environment name variable here only if when condition is true
-      when: ansible_hostname == 'machine2' and dest_node == 'sit1'
-      delegate_to: SIT1
+- name: Got From All node
+  hosts: common_ser
 
   tasks:
     - name: Include vars of src_node_fetch/vars/main.yml into the 'src_dict'.
       include_vars:
         file: src_node_fetch/vars/main.yml
         name: src_dict
-      delegate_to: localhost
+        #delegate_to: localhost
 
     - name: Include vars of dest_node_fetch/vars/main.yml into the 'dest_dict'.
       include_vars:
         file: dest_node_fetch/vars/main.yml
         name: dest_dict
-      delegate_to: localhost
+        # delegate_to: localhost
     
     - name: calling python module for disaplaying the module versions deployed on src and dest side by side
       dictinary_compare: 
         src: "{{ src_dict  }}"
         dest: "{{  dest_dict }}" 
         opt: False
-      delegate_to: 127.0.0.1
+        #delegate_to: 127.0.0.1
       register: data1
     - name: debug1
       shell: echo  "{{ data1.msg }} "
-      delegate_to: 127.0.0.1
+      # delegate_to: 127.0.0.1
       run_once: true
       register: display
 
@@ -85,7 +56,7 @@
         src: "{{ src_dict  }}"
         dest: "{{  dest_dict }}"
         opt: True
-      delegate_to: 127.0.0.1
+        #delegate_to: 127.0.0.1
       register: data2
     
     
@@ -95,21 +66,22 @@
       set_fact:
         diff: "{{ data2.msg }}"
         display: "{{ display.stdout_lines }}"
-      delegate_to: localhost
+        #delegate_to: localhost
       run_once: true
 
 
     - name: Print the diff dictionary  
       debug:
         msg: "{{ diff }}"
-      delegate_to: localhost
+        #delegate_to: localhost
       run_once: true
 
-
+    - debug:
+        msg: ModName,(SrcNode,DestNode)
     - name: print the display option for deployed version
       debug:
-        msg: "{{ display }}"
-      delegate_to: localhost
+              msg: '{{ display }}' 
+        #delegate_to: localhost
       run_once: true
 
 ...
