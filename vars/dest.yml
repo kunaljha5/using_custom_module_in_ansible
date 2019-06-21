@@ -1,42 +1,23 @@
 ---
-# Variables for DIT1 as Source.
+# Variables for DIT1|SIT.
 
 
 dit1:
   mule_path: '/ciohosting/cce2e/dit1/cce2e-383-mule/apps/'
   machine_name: "machine2"
-  flag_node: "dit1"
-  machine_inventory_name: "DIT1"
 dit2:
   mule_path: '/ciohosting/cce2e/dit2/cce2e-383-mule/apps/'
   machine_name: "machine2"
-  flag_node: "dit2"
-  machine_inventory_name: "DIT2"
 dit3:
   mule_path: '/ciohosting/cce2e/dit3/cce2e-383-mule/apps/'
   machine_name: "machine2"
-  flag_node: "dit3"
-  machine_inventory_name: "DIT3"
 sit1:
   mule_path: '/ciohosting/cce2e/sit1/cce2e-383-mule/apps/'
   machine_name: "machine2"
-  flag_node: "sit1"
-  machine_inventory_name: "SIT1"
 sit2:
   mule_path: '/ciohosting/cce2e/sit2/cce2e-383-mule/apps/'
   machine_name: "machine2"
-  flag_node: "sit2"
-  machine_inventory_name: "SIT2"
 sit3:
   mule_path: '/ciohosting/cce2e/sit3/cce2e-383-mule/apps/'
   machine_name: "machine2"
-  flag_node: "sit3"
-  machine_inventory_name: "SIT3"
-
-
-
-
-
-
-
-
+...

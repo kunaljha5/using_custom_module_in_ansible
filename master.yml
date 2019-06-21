@@ -8,7 +8,7 @@
       AppPath: '{{(lookup("vars", src_node)).mule_path }}'
       EnvName: "{{ src_node }}"
 
-- name: Yaml Playbook to fetch Source Node App module version deployed
+- name: Yaml Playbook to fetch Destination Node App module version deployed
   hosts: "{{ dest_node }}"                                                       # this is the server group for which we want to execute this playbook
   vars_files:
   - "vars/dest.yml"
