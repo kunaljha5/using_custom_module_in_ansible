@@ -3,20 +3,24 @@
  - hosts: LTA
    vars:
      caglfile: "/ciohosting/cce2e/lta/cce2e-383-mule/conf/cc-api-general-LTA.properties"
+     # caglfile is the variable for the properties file
    tasks:
      - name: Fail if CreatFacilityScorecard variable not supplied.
        fail:
          msg: "Bailing out, this playbook needs 'CreatFacilityScorecard'"
+         # this task will fail the playbook if someone has not defined CreatFacilityScorecard variable via jenkins.
        when: CreatFacilityScorecard is not defined
     
      - name: Fail if LoanSetup variable not supplied.
        fail:
          msg: "Bailing out, this playbook needs 'LoanSetup'"
+         # this task will fail the playbook if someone has not defined LoanSetup variable via jenkins.
        when: LoanSetup is not defined
 
      - name: Fail if CustomerSetup variable not supplied.
        fail:
          msg: "Bailing out, this playbook needs 'CustomerSetup'"
+         # this task will fail the playbook if someone has not defined CustomerSetup variable via jenkins.
        when: CustomerSetup is not defined
 
      - name: Ensure Mock.IRR.CreatFacilityScorecard set to true
@@ -25,6 +29,8 @@
          state: present
          regexp: '^Mock.IRR.CreatFacilityScorecard='
          line: "Mock.IRR.CreatFacilityScorecard=true"
+         # this task will search string Mock.IRR.CreatFacilityScorecard in properties file and replace its value to true if 
+         # CreatFacilityScorecard value is false, otherwise skip
        when: CreatFacilityScorecard == "Enabled"
      - name: Ensure Mock.IRR.CreatFacilityScorecard set to false
        lineinfile:
@@ -32,6 +38,8 @@
          state: present
          regexp: '^Mock.IRR.CreatFacilityScorecard='
          line: 'Mock.IRR.CreatFacilityScorecard=false'
+         # this task will search string Mock.IRR.CreatFacilityScorecard in properties file and replace its value to false if 
+         # CreatFacilityScorecard value is true, otherwise skip
        when: CreatFacilityScorecard  == "Disabled"
      - name: Ensure cc.mock.LIQ.LoanSetup set to true
        lineinfile:
@@ -39,6 +47,8 @@
          state: present
          regexp: '^cc.mock.LIQ.LoanSetup='
          line: 'cc.mock.LIQ.LoanSetup=true'
+         # this task will search string cc.mock.LIQ.LoanSetup in properties file and replace its value to true if 
+         # LoanSetup value is false, otherwise skip
        when:  LoanSetup  == "Enabled"
      - name: Ensure cc.mock.LIQ.LoanSetup set to false
        lineinfile:
@@ -46,6 +56,8 @@
          state: present
          regexp: '^cc.mock.LIQ.LoanSetup='
          line: 'cc.mock.LIQ.LoanSetup=false'
+         # this task will search string cc.mock.LIQ.LoanSetup in properties file and replace its value to false if 
+         # LoanSetup value is true, otherwise skip
        when:  LoanSetup  == "Disabled"
      - name: Ensure cc.mock.LIQ.CustomerSetup set to true
        lineinfile:
@@ -53,6 +65,8 @@
          state: present
          regexp: '^cc.mock.LIQ.CustomerSetup='
          line: 'cc.mock.LIQ.CustomerSetup=true'
+         # this task will search string cc.mock.LIQ.CustomerSetup in properties file and replace its value to true if 
+         # CustomerSetup value is false, otherwise skip
        when:  CustomerSetup  == "Enabled"
      - name: Ensure cc.mock.LIQ.CustomerSetup set to false
        lineinfile:
@@ -60,4 +74,6 @@
          state: present
          regexp: '^cc.mock.LIQ.CustomerSetup='
          line: 'cc.mock.LIQ.CustomerSetup=false'
+         # this task will search string cc.mock.LIQ.CustomerSetup in properties file and replace its value to false if 
+         # CustomerSetup value is true, otherwise skip
        when:  CustomerSetup  == "Disabled"
