@@ -4,6 +4,21 @@
    vars:
      caglfile: "/ciohosting/cce2e/lta/cce2e-383-mule/conf/cc-api-general-LTA.properties"
    tasks:
+     - name: Fail if CreatFacilityScorecard variable not supplied.
+       fail:
+         msg: "Bailing out, this playbook needs 'CreatFacilityScorecard'"
+       when: CreatFacilityScorecard is not defined
+    
+     - name: Fail if LoanSetup variable not supplied.
+       fail:
+         msg: "Bailing out, this playbook needs 'LoanSetup'"
+       when: LoanSetup is not defined
+
+     - name: Fail if CustomerSetup variable not supplied.
+       fail:
+         msg: "Bailing out, this playbook needs 'CustomerSetup'"
+       when: CustomerSetup is not defined
+
      - name: Ensure Mock.IRR.CreatFacilityScorecard set to true
        lineinfile:
          path: "{{ caglfile }}"
