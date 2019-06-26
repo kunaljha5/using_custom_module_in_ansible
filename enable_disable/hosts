@@ -1,0 +1,10 @@
+[DIT]
+dit1 ansible_ssh_host=172.24.132.11
+dit2 ansible_ssh_host=172.24.132.11
+dit3 ansible_ssh_host=172.24.132.9
+sit1 ansible_ssh_host=172.24.132.9
+sit2 ansible_ssh_host=172.24.132.9
+UAT1 ansible_ssh_host=172.24.132.9
+UAT2 ansible_ssh_host=172.24.132.11
+common_ser ansible_ssh_host=172.24.132.9
+LTA ansible_ssh_host=172.24.132.8

@@ -1,0 +1,48 @@
+
+---
+ - hosts: LTA
+   vars:
+     caglfile: "/ciohosting/cce2e/lta/cce2e-383-mule/conf/cc-api-general-LTA.properties"
+   tasks:
+     - name: Ensure Mock.IRR.CreatFacilityScorecard set to true
+       lineinfile:
+         path: "{{ caglfile }}"
+         state: present
+         regexp: '^Mock.IRR.CreatFacilityScorecard='
+         line: "Mock.IRR.CreatFacilityScorecard=true"
+       when: CreatFacilityScorecard == "Enabled"
+     - name: Ensure Mock.IRR.CreatFacilityScorecard set to false
+       lineinfile:
+         path: "{{ caglfile }}"
+         state: present
+         regexp: '^Mock.IRR.CreatFacilityScorecard='
+         line: 'Mock.IRR.CreatFacilityScorecard=false'
+       when: CreatFacilityScorecard  == "Disabled"
+     - name: Ensure cc.mock.LIQ.LoanSetup set to true
+       lineinfile:
+         path: "{{ caglfile }}"
+         state: present
+         regexp: '^cc.mock.LIQ.LoanSetup='
+         line: 'cc.mock.LIQ.LoanSetup=true'
+       when:  LoanSetup  == "Enabled"
+     - name: Ensure cc.mock.LIQ.LoanSetup set to false
+       lineinfile:
+         path: "{{ caglfile }}"
+         state: present
+         regexp: '^cc.mock.LIQ.LoanSetup='
+         line: 'cc.mock.LIQ.LoanSetup=false'
+       when:  LoanSetup  == "Disabled"
+     - name: Ensure cc.mock.LIQ.CustomerSetup set to true
+       lineinfile:
+         path: "{{ caglfile }}"
+         state: present
+         regexp: '^cc.mock.LIQ.CustomerSetup='
+         line: 'cc.mock.LIQ.CustomerSetup=true'
+       when:  CustomerSetup  == "Enabled"
+     - name: Ensure cc.mock.LIQ.CustomerSetup set to false
+       lineinfile:
+         path: "{{ caglfile }}"
+         state: present
+         regexp: '^cc.mock.LIQ.CustomerSetup='
+         line: 'cc.mock.LIQ.CustomerSetup=false'
+       when:  CustomerSetup  == "Disabled"
