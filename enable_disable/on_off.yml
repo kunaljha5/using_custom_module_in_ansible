@@ -5,23 +5,23 @@
      caglfile: "/ciohosting/cce2e/lta/cce2e-383-mule/conf/cc-api-general-LTA.properties"
      # caglfile is the variable for the properties file
    tasks:
-     - name: Fail if CreatFacilityScorecard variable not supplied.
-       fail:
-         msg: "Bailing out, this playbook needs 'CreatFacilityScorecard'"
+           #- name: Fail if CreatFacilityScorecard variable not supplied.
+           #fail:
+           #msg: "Bailing out, this playbook needs 'CreatFacilityScorecard'"
          # this task will fail the playbook if someone has not defined CreatFacilityScorecard variable via jenkins.
-       when: CreatFacilityScorecard is not defined
+         #when: CreatFacilityScorecard is not defined
     
-     - name: Fail if LoanSetup variable not supplied.
-       fail:
-         msg: "Bailing out, this playbook needs 'LoanSetup'"
+           # - name: Fail if LoanSetup variable not supplied.
+           #fail:
+           #CustomerSetupmsg: "Bailing out, this playbook needs 'LoanSetup'"
          # this task will fail the playbook if someone has not defined LoanSetup variable via jenkins.
-       when: LoanSetup is not defined
+         #when: LoanSetup is not defined
 
-     - name: Fail if CustomerSetup variable not supplied.
-       fail:
-         msg: "Bailing out, this playbook needs 'CustomerSetup'"
+           #- name: Fail if CustomerSetup variable not supplied.
+           #fail:
+           #msg: "Bailing out, this playbook needs 'CustomerSetup'"
          # this task will fail the playbook if someone has not defined CustomerSetup variable via jenkins.
-       when: CustomerSetup is not defined
+         #when: CustomerSetup is not defined
 
      - name: Ensure Mock.IRR.CreatFacilityScorecard set to true
        lineinfile:
