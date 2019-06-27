@@ -31,7 +31,7 @@
          line: "Mock.IRR.CreatFacilityScorecard=true"
          # this task will search string Mock.IRR.CreatFacilityScorecard in properties file and replace its value to true if 
          # CreatFacilityScorecard value is false, otherwise skip
-       when: CreatFacilityScorecard == "Enabled"
+       when: CreatFacilityScorecard is defined and CreatFacilityScorecard == "Enabled"
      - name: Ensure Mock.IRR.CreatFacilityScorecard set to false
        lineinfile:
          path: "{{ caglfile }}"
@@ -40,7 +40,7 @@
          line: 'Mock.IRR.CreatFacilityScorecard=false'
          # this task will search string Mock.IRR.CreatFacilityScorecard in properties file and replace its value to false if 
          # CreatFacilityScorecard value is true, otherwise skip
-       when: CreatFacilityScorecard  == "Disabled"
+       when: CreatFacilityScorecard is defined and CreatFacilityScorecard  == "Disabled"
      - name: Ensure cc.mock.LIQ.LoanSetup set to true
        lineinfile:
          path: "{{ caglfile }}"
@@ -49,7 +49,7 @@
          line: 'cc.mock.LIQ.LoanSetup=true'
          # this task will search string cc.mock.LIQ.LoanSetup in properties file and replace its value to true if 
          # LoanSetup value is false, otherwise skip
-       when:  LoanSetup  == "Enabled"
+       when:  LoanSetup  is defined and LoanSetup  == "Enabled"
      - name: Ensure cc.mock.LIQ.LoanSetup set to false
        lineinfile:
          path: "{{ caglfile }}"
@@ -58,7 +58,7 @@
          line: 'cc.mock.LIQ.LoanSetup=false'
          # this task will search string cc.mock.LIQ.LoanSetup in properties file and replace its value to false if 
          # LoanSetup value is true, otherwise skip
-       when:  LoanSetup  == "Disabled"
+       when:  LoanSetup  is defined and LoanSetup  == "Disabled"
      - name: Ensure cc.mock.LIQ.CustomerSetup set to true
        lineinfile:
          path: "{{ caglfile }}"
@@ -67,7 +67,7 @@
          line: 'cc.mock.LIQ.CustomerSetup=true'
          # this task will search string cc.mock.LIQ.CustomerSetup in properties file and replace its value to true if 
          # CustomerSetup value is false, otherwise skip
-       when:  CustomerSetup  == "Enabled"
+       when:  CustomerSetup is defined and CustomerSetup  == "Enabled"
      - name: Ensure cc.mock.LIQ.CustomerSetup set to false
        lineinfile:
          path: "{{ caglfile }}"
@@ -76,4 +76,4 @@
          line: 'cc.mock.LIQ.CustomerSetup=false'
          # this task will search string cc.mock.LIQ.CustomerSetup in properties file and replace its value to false if 
          # CustomerSetup value is true, otherwise skip
-       when:  CustomerSetup  == "Disabled"
+       when:  CustomerSetup is defined and CustomerSetup  == "Disabled"
