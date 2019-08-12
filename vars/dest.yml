@@ -5,19 +5,26 @@
 dit1:
   mule_path: '/ciohosting/cce2e/dit1/cce2e-383-mule/apps/'
   machine_name: "machine2"
+  deployEnv: "dit1"
 dit2:
   mule_path: '/ciohosting/cce2e/dit2/cce2e-383-mule/apps/'
   machine_name: "machine2"
+  deployEnv: "dit2"
 dit3:
   mule_path: '/ciohosting/cce2e/dit3/cce2e-383-mule/apps/'
   machine_name: "machine2"
+  deployEnv: "dit3"
 sit1:
   mule_path: '/ciohosting/cce2e/sit1/cce2e-383-mule/apps/'
   machine_name: "machine2"
+  deployEnv: "sit1"
 sit2:
   mule_path: '/ciohosting/cce2e/sit2/cce2e-383-mule/apps/'
   machine_name: "machine2"
+  deployEnv: "sit2"
 sit3:
   mule_path: '/ciohosting/cce2e/sit3/cce2e-383-mule/apps/'
   machine_name: "machine2"
+  deployEnv: "sit3"
+  
 ...

@@ -94,7 +94,7 @@ def dict_diff(src, dest):
                         break
     # Check all keys in dest dict to find missing
     if len(diff) == 0:
-        diff = { "Noting to Deploy" : "Nothing to Deploy"}
+        diff = { "Nothing to Deploy" : "Nothing to Deploy"}
     out_lines = ''
     counter=1
     main_dict = {}

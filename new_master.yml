@@ -1,0 +1,103 @@
+---
+- name: Yaml Playbook to fetch Source Node App module version deployed
+  hosts: "{{ src_node }}"                                                       # this is the server group for which we want to execute this playbook
+  gather_facts: false
+  vars_files:
+  - "vars/dest.yml"
+  roles:
+    - role: src_node_fetch
+      AppPath: '{{(lookup("vars", src_node)).mule_path }}'
+      EnvName: "{{ src_node }}"
+
+- name: Yaml Playbook to fetch Destination Node App module version deployed
+  hosts: "{{ dest_node }}"
+  # this is the server group for which we want to execute this playbook
+  gather_facts: false
+  vars_files:
+  - "vars/dest.yml"
+  roles:
+    - role: dest_node_fetch
+      AppPath: '{{(lookup("vars", dest_node)).mule_path }}'
+      EnvName: "{{ dest_node }}"
+
+
+- name: Got From All node
+  hosts: common_ser
+  gather_facts: false
+  vars:
+    app_list: []
+    version_list: []
+    url_list11: []
+  tasks:
+    - name: Include vars of src_node_fetch/vars/main.yml into the 'src_dict'.
+      include_vars:
+        file: src_node_fetch/vars/main.yml
+        name: src_dict
+    - name: Include vars of dest_node_fetch/vars/main.yml into the 'dest_dict'.
+      include_vars:
+        file: dest_node_fetch/vars/main.yml
+        name: dest_dict
+    - name: calling python module for disaplaying the module versions deployed on src and dest side by side
+      dictinary_compare:
+        src: "{{ src_dict  }}"
+        dest: "{{  dest_dict }}"
+        opt: False
+      register: data1
+    - name: debug1
+      shell: echo  "{{ data1.msg }} "
+      run_once: true
+      register: display
+    - name: calling python module for displaying the module version difference between src and destination env
+      dictinary_compare:
+        src: "{{ src_dict  }}"
+        dest: "{{  dest_dict }}"
+        opt: True
+      register: data2
+    - name: set_fact diff and display
+      set_fact:
+        diff: "{{ data2.msg }}"
+        display: "{{ display.stdout_lines }}"
+        runCount: "{{ data2.msg|length }}"
+      run_once: true
+    - name: set_fact in array from the diff dictionary
+      set_fact:
+        app_list: "{{ app_list + [item.value.app] }}"      
+        version_list: "{{ version_list + [item.value.version] }}"
+        url_head: https://artifacts.horizon.bankofamerica.com/artifactory/libs-release-local-maven/com/baml/crdtctr/
+      loop: "{{ q('dict', diff) }}"
+      run_once: true
+
+    - name: print app and version
+      debug:
+        msg: "{{ item[0]  , item[1] }}"
+      loop: "{{ query('together', version_list , app_list) }}"
+
+
+
+    - name: Deploy app for each change
+      include_role:
+        name: deploy_single_app
+      vars:
+        AppPath: '{{(lookup("vars", src_node)).mule_path }}'
+        EnvName: "{{ src_node }}"
+        app_name: "{{ item[1] }}"
+        version_val: "{{ item[0] }}"
+      loop: "{{ query('together', version_list , app_list) }}"
+      when: '"Nothing to Deploy" not in version_list'
+
+
+    - debug:
+        msg: ModName,(SrcNode,DestNode)
+    - name: print the display option for deployed version
+      debug:
+              msg: '{{ display }}'
+      run_once: true
+
+
+
+
+
+...
+
+
+

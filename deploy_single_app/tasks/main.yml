@@ -1,0 +1,73 @@
+  - name: set artifact url
+    set_fact:
+      url_base11: "{{ url_head}}{{ app_name | regex_replace('-', '_') }}/crdtctr-{{ app_name }}/{{ version_val }}/crdtctr-{{ app_name }}-{{ version_val }}.zip]"
+  - name:
+    debug:
+      msg: "{{ url_base11 }}"
+
+  - name: set unique deploy directory_name and location
+    set_fact:
+      deploy_jobdir: "{{ app_name }}_{{ dest_node }}_{{ version_val }}"
+
+  - name: set unique deploy directory location
+    set_fact:
+      deploy_downloads_dir: "/tmp/mulesoft/deployJob/{{ deploy_jobdir }}/{{ version_val }}"
+  - name: create directories and apply permission
+    file:
+      state: "directory"
+      path: "{{ item }}"
+      mode: "0755"
+      recurse: no
+    with_items:
+      - "/tmp/mulesoft/deployJob/"
+      - "{{deploy_downloads_dir}}"
+      - "/tmp/mulesoft/deployJob/{{ deploy_jobdir }}/"
+    register: dir_update_result
+  - debug: var=dir_update_result
+  
+  - name: "Pull deployable artifact for {{app_name}} of version {{ version_val }} from location {{url_base11}}"
+    get_url:
+      url: "{{url_base11}}"
+      dest: "{{deploy_downloads_dir}}/{{app_name}}{{version_val}}.zip"
+      mode: 754
+      url_username: "{{artifactUser}}"
+      url_password: "{{artifactPwd}}"
+      
+  - name: Set SOA REST Parameters
+    set_fact:
+      soa_deploy_filename: "{app_name}.zip"
+      soa_deploy_fileurl: "{{deploy_downloads_dir}}/{{app_name}}{{version_val}}.zip"
+      servertype: "G"
+      serverlist: "CCE2E-382-{{ dest_node }}"
+      isdomain: "false"
+      appcode: "CCE2E"
+      envcode: "{{dest_node}}"
+      mmccode: "AP_CCE2E_DEV"
+      userid: "SEVCCE2E"
+      passwd: "youneedtopuit"
+
+  - name: "Check for mandatory variables"
+    fail:
+      msg: "Fail - One of the mandatory variable is missing
+        servertype
+        serverlist
+        isdomain
+        appcode
+        envcode
+        mmccode
+        userid
+        passwd !"
+    when: (envcode == 'not defined')
+    
+  - include_tasks: bdtSOADeploy_RESTRequest.yml
+
+  always:
+  - name: "Remove job temp work for {{deploy_jobdir}}"
+    file:
+      state: absent
+      path: "/tmp/mulesoft/deployJob/{{ deploy_jobdir }}/"
+    register: echoResult
+  - debug: var=echoResult
+  - debug:
+      msg: "Deployment Process completed for {{app_name}} on {{dest_node}} with version {{ version_val }}"
+
